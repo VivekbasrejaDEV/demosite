@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONOFORM — Architecture Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mono-black: #0a0a0a;
+            --mono-charcoal: #111111;
+            --mono-slate: #1a1a1a;
+            --mono-ash: #ededed;
+            --mono-snow: #fafafa;
+            --accent: #7ea1ff;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background: var(--mono-black);
+            color: var(--mono-ash);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            line-height: 1.2;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--mono-slate);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--mono-snow);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .logo:hover {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--mono-ash);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--mono-ash);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Page Sections */
+        section {
+            min-height: 100vh;
+            padding: 8rem 3rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Hero */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--mono-slate) 0%, var(--mono-charcoal) 50%, var(--mono-black) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0L100 100M100 0L0 100" stroke="%23111" stroke-width="0.5"/></svg>');
+            opacity: 0.3;
+            animation: subtleMove 20s linear infinite;
+        }
+
+        @keyframes subtleMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .manifesto {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+        }
+
+        .manifesto h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 500;
+            color: var(--mono-snow);
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.8s ease-out backwards;
+        }
+
+        .manifesto h1:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .manifesto h1:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--mono-ash);
+            opacity: 0.4;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 1px;
+            height: 3rem;
+            background: var(--mono-ash);
+            opacity: 0.4;
+        }
+
+        /* Projects Grid */
+        .projects-header {
+            margin-bottom: 4rem;
+        }
+
+        .projects-header h1 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 2rem;
+            border-bottom: 1px solid var(--mono-slate);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .filter-pill {
+            background: none;
+            border: none;
+            color: var(--mono-ash);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s;
+            white-space: nowrap;
+            opacity: 0.5;
+        }
+
+        .filter-pill.active {
+            color: var(--mono-snow);
+            opacity: 1;
+        }
+
+        .filter-pill.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1.05rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+        }
+
+        .filter-pill:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 6rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            opacity: 0;
+            transform: translateX(-60px);
+            animation: slideInLeft 0.7s ease-out forwards;
+        }
+
+        .project-card:nth-child(even) {
+            transform: translateX(60px);
+            animation-name: slideInRight;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .project-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-image {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            background: var(--mono-charcoal);
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease-out;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            mix-blend-mode: multiply;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .project-card:hover .project-image::after {
+            opacity: 0.2;
+        }
+
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 2rem;
+        }
+
+        .project-info h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .project-card:hover .project-info h2 {
+            color: var(--accent);
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            color: var(--mono-ash);
+            opacity: 0.7;
+            max-width: 600px;
+        }
+
+        .project-year {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--mono-ash);
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+
+        /* Project Detail */
+        .project-detail {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            padding-top: 6rem;
+        }
+
+        .project-sidebar {
+            position: sticky;
+            top: 8rem;
+            height: fit-content;
+        }
+
+        .project-sidebar h1 {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .project-meta {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--mono-ash);
+            opacity: 0.6;
+            margin-bottom: 3rem;
+        }
+
+        .specs, .credits {
+            margin-bottom: 3rem;
+        }
+
+        .specs h3, .credits h3 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--mono-ash);
+            opacity: 0.4;
+            margin-bottom: 1rem;
+        }
+
+        .specs dl, .credits dl {
+            font-size: 0.9rem;
+        }
+
+        .specs dt, .credits dt {
+            color: var(--mono-ash);
+            opacity: 0.6;
+            width: 6rem;
+            display: inline-block;
+        }
+
+        .specs dd, .credits dd {
+            display: inline;
+            color: var(--mono-snow);
+        }
+
+        .specs div, .credits div {
+            margin-bottom: 0.5rem;
+        }
+
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .project-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        /* Philosophy */
+        .philosophy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .philosophy-content h1 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 4rem;
+        }
+
+        .philosophy-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .pull-quote {
+            border-left: 2px solid var(--accent);
+            padding-left: 3rem;
+            margin: 4rem 0;
+        }
+
+        .pull-quote p {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-style: italic;
+            color: var(--mono-snow);
+            line-height: 1.4;
+        }
+
+        /* Journal */
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .journal-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .journal-image {
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background: var(--mono-charcoal);
+        }
+
+        .journal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .journal-card:hover .journal-image img {
+            transform: scale(1.05);
+        }
+
+        .journal-date {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--mono-ash);
+            opacity: 0.6;
+        }
+
+        .journal-card h2 {
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .journal-card:hover h2 {
+            color: var(--accent);
+        }
+
+        .journal-excerpt {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Article */
+        .article-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .article-header {
+            border-bottom: 1px solid var(--mono-slate);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .article-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--mono-ash);
+            opacity: 0.6;
+        }
+
+        .article-body {
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact */
+        .contact-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--mono-slate) 0%, var(--mono-charcoal) 100%);
+        }
+
+        .contact-card {
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--mono-slate);
+            padding: 3rem;
+            max-width: 500px;
+        }
+
+        .contact-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-card a {
+            color: var(--mono-ash);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-card a:hover {
+            color: var(--accent);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-address {
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--mono-slate);
+            color: var(--mono-ash);
+            opacity: 0.7;
+            line-height: 1.8;
+        }
+
+        .contact-note {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--mono-slate);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.4;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--mono-slate);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.85rem;
+            color: var(--mono-ash);
+            opacity: 0.6;
+        }
+
+        .back-to-top {
+            background: none;
+            border: none;
+            color: var(--mono-ash);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .back-to-top:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--mono-charcoal);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            section {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .project-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .project-sidebar {
+                position: static;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .filter-pills {
+                gap: 1rem;
+            }
+
+            .journal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Utility */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="logo">MONOFORM</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#projects" data-page="projects">Projects</a></li>
+                <li><a href="#philosophy" data-page="philosophy">Philosophy</a></li>
+                <li><a href="#journal" data-page="journal">Journal</a></li>
+                <li><a href="#contact" data-page="contact">Contact</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Home / Manifesto -->
+    <section id="home" class="hero">
+        <div class="manifesto">
+            <h1>Light sculpts form.</h1>
+            <h1>Silence amplifies space.</h1>
+            <h1>We design intersections of shadow and structure.</h1>
+        </div>
+        <div class="scroll-indicator">
+            Scroll
+        </div>
+    </section>
+
+    <!-- Projects Index -->
+    <section id="projects" class="hidden">
+        <div class="projects-header">
+            <h1>Index</h1>
+            <div class="filter-pills">
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="residential">Residential</button>
+                <button class="filter-pill" data-filter="commercial">Commercial</button>
+                <button class="filter-pill" data-filter="conceptual">Conceptual</button>
+            </div>
+        </div>
+        <div class="projects-grid" id="projectsGrid">
+            <!-- Projects will be inserted here by JS -->
+        </div>
+    </section>
+
+    <!-- Project Detail Template -->
+    <section id="project-detail" class="project-detail hidden">
+        <div class="project-sidebar" id="projectSidebar">
+            <!-- Sidebar content inserted by JS -->
+        </div>
+        <div class="project-content" id="projectContent">
+            <!-- Project content inserted by JS -->
+        </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section id="philosophy" class="hidden">
+        <div class="philosophy-content">
+            <h1>Philosophy</h1>
+            <p>At MONOFORM, we believe architecture is not about addition—it's about distillation. Every line, every surface, every void is considered with the precision of a sculptor and the restraint of a poet.</p>
+            <p>Our practice emerges from a deep engagement with materiality and light. We study how shadow defines edge, how silence frames sound, how emptiness creates presence.</p>
+            <div class="pull-quote">
+                <p>"We reject ornament for its own sake. We embrace brutalist honesty."</p>
+            </div>
+            <p>We seek the point where function and form become indistinguishable—where design disappears into experience.</p>
+            <p style="opacity: 0.6;">Every project is a study in what can be eliminated without loss—and what emerges when distraction falls away.</p>
+        </div>
+    </section>
+
+    <!-- Journal -->
+    <section id="journal" class="hidden">
+        <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); text-transform: uppercase; margin-bottom: 3rem;">Insights</h1>
+        <div class="journal-grid" id="journalGrid">
+            <!-- Journal posts inserted by JS -->
+        </div>
+    </section>
+
+    <!-- Article -->
+    <section id="article" class="hidden">
+        <div class="article-content" id="articleContent">
+            <!-- Article content inserted by JS -->
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-wrapper hidden">
+        <div class="contact-card">
+            <h1>Reach Us</h1>
+            <div class="contact-info">
+                <p><a href="mailto:hello@monoform.studio">hello@monoform.studio</a></p>
+                <p><a href="tel:+15551234567">+1 (555) 123-4567</a></p>
+            </div>
+            <div class="contact-address">
+                123 Minimal Avenue<br>
+                New York, NY 10013
+            </div>
+            <div class="contact-note">
+                Studio visits by appointment only
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 MONOFORM. All rights reserved.</p>
+            <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Back to Top ↑</button>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const projects = [
+            {
+                id: 'shadow-house',
+                title: 'Shadow House',
+                category: 'residential',
+                year: 2024,
+                image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=750&fit=crop&q=80',
+                excerpt: 'A residence designed around the movement of light across concrete planes.',
+                description: 'Shadow House explores the relationship between solid mass and ephemeral light. The structure is composed of interlocking concrete volumes that frame specific views and create choreographed shadow patterns throughout the day.',
+                specs: [
+                    { label: 'Area', value: '280 m²' },
+                    { label: 'Location', value: 'Kyoto, Japan' },
+                    { label: 'Completed', value: '2024' },
+                    { label: 'Type', value: 'Residential' }
+                ],
+                credits: [
+                    { role: 'Architect', name: 'MONOFORM' },
+                    { role: 'Structural', name: 'Kato Engineering' },
+                    { role: 'Photography', name: 'Jin Tanaka' }
+                ],
+                gallery: [
+                    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=750&fit=crop&q=80',
+                    'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=1200&h=750&fit=crop&q=80',
+                    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=750&fit=crop&q=80'
+                ]
+            },
+            {
+                id: 'void-pavilion',
+                title: 'Void Pavilion',
+                category: 'conceptual',
+                year: 2023,
+                image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&h=750&fit=crop&q=80',
+                excerpt: 'An exploration of negative space as primary architectural gesture.',
+                description: 'Void Pavilion inverts traditional architectural thinking by treating emptiness as the built form. The intervention consists of six precisely cut voids in the landscape, each framing a specific celestial or terrestrial view.',
+                specs: [
+                    { label: 'Area', value: '1,200 m²' },
+                    { label: 'Location', value: 'Marfa, Texas' },
+                    { label: 'Status', value: 'Concept' },
+                    { label: 'Type', value: 'Installation' }
+                ],
+                credits: [
+                    { role: 'Design', name: 'MONOFORM' },
+                    { role: 'Renders', name: 'Studio Lux' }
+                ],
+                gallery: [
+                    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&h=750&fit=crop&q=80',
+                    'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=1200&h=750&fit=crop&q=80'
+                ]
+            },
+            {
+                id: 'linear-tower',
+                title: 'Linear Tower',
+                category: 'commercial',
+                year: 2023,
+                image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=1200&h=750&fit=crop&q=80',
+                excerpt: 'Vertical minimalism: a 40-story study in repetition and restraint.',
+                description: 'Linear Tower rejects the spectacle of contemporary high-rises in favor of monolithic clarity. A single repeated floor plate creates a rhythmic facade where shadow becomes ornament.',
+                specs: [
+                    { label: 'Area', value: '42,000 m²' },
+                    { label: 'Location', value: 'Seoul, South Korea' },
+                    { label: 'Height', value: '165 m' },
+                    { label: 'Floors', value: '40' }
+                ],
+                credits: [
+                    { role: 'Architect', name: 'MONOFORM' },
+                    { role: 'Developer', name: 'Han Group' },
+                    { role: 'Photography', name: 'Park Min-jun' }
+                ],
+                gallery: [
+                    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=750&fit=crop&q=80',
+                    'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&h=750&fit=crop&q=80'
+                ]
+            },
+            {
+                id: 'monolith-chapel',
+                title: 'Monolith Chapel',
+                category: 'residential',
+                year: 2022,
+                image: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=1200&h=750&fit=crop&q=80',
+                excerpt: 'Sacred space carved from a single concrete gesture.',
+                description: 'A private meditation chapel formed by a single continuous concrete pour. The interior is illuminated solely by a narrow skylight that traces the sun\'s path.',
+                specs: [
+                    { label: 'Area', value: '45 m²' },
+                    { label: 'Location', value: 'Valle de Bravo, Mexico' },
+                    { label: 'Completed', value: '2022' }
+                ],
+                credits: [
+                    { role: 'Design', name: 'MONOFORM' },
+                    { role: 'Builder', name: 'Concreto Obra' }
+                ],
+                gallery: [
+                    'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&h=750&fit=crop&q=80'
+                ]
+            }
+        ];
+
+        const journalPosts = [
+            {
+                id: 'on-restraint',
+                title: 'On Restraint',
+                date: '2024-01-15',
+                author: 'MONOFORM Studio',
+                image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=600&fit=crop&q=80',
+                excerpt: 'Why doing less is the hardest architectural discipline.',
+                body: `Restraint is not minimalism. Minimalism is a style; restraint is a discipline.
+
+Every project begins with infinite possibility. The amateur adds. The professional subtracts. The master knows when to stop.
+
+We've spent the last decade learning to say no. No to the decorative column. No to the unnecessary material change. No to the architectural gesture that serves only the architect's ego.
+
+What remains is not emptiness—it's clarity.`
+            },
+            {
+                id: 'concrete-studies',
+                title: 'Concrete Studies',
+                date: '2023-12-03',
+                author: 'MONOFORM Studio',
+                image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=600&fit=crop&q=80',
+                excerpt: 'Material investigations in brutalist honesty.',
+                body: `Concrete is not brutal—it's honest. It shows its making. It reveals its age. It accepts weathering as patina rather than failure.
+
+Our studio's material palette is limited by choice: concrete, glass, steel. Within these constraints, we find infinite variation through proportion, texture, and light.
+
+Recent experiments include board-formed surfaces that record the grain of timber, polished floors that reflect like water, and aggregate exposures that reveal geological time.`
+            },
+            {
+                id: 'shadow-as-ornament',
+                title: 'Shadow as Ornament',
+                date: '2023-10-22',
+                author: 'MONOFORM Studio',
+                image: 'https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=800&h=600&fit=crop&q=80',
+                excerpt: 'How light defines space when decoration is removed.',
+                body: `When you eliminate applied ornament, architecture must find expression through fundamental elements: proportion, material, and light.
+
+Shadow becomes the primary decorative system. A deep reveal. An overhang. A perforation. These create ever-changing patterns that ornament could never match.
+
+We design shadow as carefully as we design form.`
+            }
+        ];
+
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinksContainer = document.getElementById('navLinks');
+
+        function showSection(sectionId) {
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            navLinks.forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`[data-page="${sectionId}"], [href="#${sectionId}"]`);
+            if (activeLink) activeLink.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            navLinksContainer.classList.remove('active');
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = e.target.dataset.page || e.target.getAttribute('href').substring(1);
+                showSection(page);
+            });
+        });
+
+        mobileToggle.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+        });
+
+        // Render Projects
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('projectsGrid');
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+            
+            grid.innerHTML = filtered.map((project, index) => `
+                <div class="project-card" style="animation-delay: ${index * 0.1}s">
+                    <a href="#" onclick="showProject('${project.id}'); return false;">
+                        <div class="project-image">
+                            <img src="${project.image}" alt="${project.title}" loading="lazy">
+                        </div>
+                        <div class="project-info">
+                            <div>
+                                <h2>${project.title}</h2>
+                                <p>${project.excerpt}</p>
+                            </div>
+                            <span class="project-year">${project.year}</span>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Filter Projects
+        document.querySelectorAll('.filter-pill').forEach(pill => {
+            pill.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+                renderProjects(e.target.dataset.filter);
+            });
+        });
+
+        // Show Project Detail
+        function showProject(id) {
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            const sidebar = document.getElementById('projectSidebar');
+            const content = document.getElementById('projectContent');
+
+            sidebar.innerHTML = `
+                <h1>${project.title}</h1>
+                <p class="project-meta">${project.year} · ${project.category}</p>
+                
+                <div class="specs">
+                    <h3>Specifications</h3>
+                    <dl>
+                        ${project.specs.map(spec => `
+                            <div>
+                                <dt>${spec.label}</dt>
+                                <dd>${spec.value}</dd>
+                            </div>
+                        `).join('')}
+                    </dl>
+                </div>
+
+                <div class="credits">
+                    <h3>Credits</h3>
+                    <dl>
+                        ${project.credits.map(credit => `
+                            <div>
+                                <dt>${credit.role}</dt>
+                                <dd>${credit.name}</dd>
+                            </div>
+                        `).join('')}
+                    </dl>
+                </div>
+            `;
+
+            content.innerHTML = `
+                <img src="${project.image}" alt="${project.title}">
+                <div class="project-description">
+                    <p>${project.description}</p>
+                </div>
+                ${project.gallery.map(img => `<img src="${img}" alt="${project.title}" loading="lazy">`).join('')}
+                <div style="padding-top: 3rem; border-top: 1px solid var(--mono-slate);">
+                    <a href="#" onclick="showSection('projects'); return false;" style="font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mono-ash); text-decoration: none;">← Back to Index</a>
+                </div>
+            `;
+
+            showSection('project-detail');
+        }
+
+        // Render Journal
+        function renderJournal() {
+            const grid = document.getElementById('journalGrid');
+            grid.innerHTML = journalPosts.map(post => `
+                <a href="#" onclick="showArticle('${post.id}'); return false;" class="journal-card">
+                    <div class="journal-image">
+                        <img src="${post.image}" alt="${post.title}" loading="lazy">
+                    </div>
+                    <time class="journal-date">${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+                    <h2>${post.title}</h2>
+                    <p class="journal-excerpt">${post.excerpt}</p>
+                </a>
+            `).join('');
+        }
+
+        // Show Article
+        function showArticle(id) {
+            const post = journalPosts.find(p => p.id === id);
+            if (!post) return;
+
+            const content = document.getElementById('articleContent');
+            content.innerHTML = `
+                <div class="article-header">
+                    <h1>${post.title}</h1>
+                    <div class="article-meta">
+                        <time>${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+                        <span>·</span>
+                        <span>${post.author}</span>
+                    </div>
+                </div>
+                <div class="article-body">
+                    ${post.body.split('\n\n').map(para => `<p>${para}</p>`).join('')}
+                </div>
+                <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--mono-slate);">
+                    <a href="#" onclick="showSection('journal'); return false;" style="font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mono-ash); text-decoration: none;">← All Insights</a>
+                </div>
+            `;
+
+            showSection('article');
+        }
+
+        // Initialize
+        renderProjects();
+        renderJournal();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href.length <= 1) return;
+                
+                const target = document.querySelector(href);
+                if (target && !target.classList.contains('hidden')) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Make functions global for inline onclick
+        window.showProject = showProject;
+        window.showArticle = showArticle;
+        window.showSection = showSection;
+    </script>
+
+</body>
+</html>
